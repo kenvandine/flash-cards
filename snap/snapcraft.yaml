@@ -1,0 +1,26 @@
+name: flash-cards
+base: core24
+version: '0.1'
+summary: Flash Cards
+description: |
+  Flash Cards
+
+grade: stable
+confinement: strict
+
+parts:
+  flash-cards:
+    plugin: nil
+    source: .
+    override-build: |
+      cp main.py $CRAFT_PART_INSTALL/
+      cp -rp css $CRAFT_PART_INSTALL/
+      cp flash-cards $CRAFT_PART_INSTALL/
+
+apps:
+  flash-cards:
+    command: flash-cards
+    extensions: [ gnome ]
+    plugs:
+      - home
+      - removable-media
