@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Flash Cards
+Comment=Flash Cards
+Keywords=Education;FlashCards;Learn;Learning;
+Exec=flash-cards
+Icon=/snap/flash-cards/current/meta/gui/icon.png
+Terminal=false
+Categories=Education;
