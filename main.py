@@ -41,6 +41,7 @@ class FlashCardsApp(Adw.Application):
             css_provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
         )
+        self.is_fullscreen = False
 
     def on_activate(self, app):
         self.window = Gtk.ApplicationWindow(application=app, title="Flash Cards")
@@ -111,6 +112,12 @@ class FlashCardsApp(Adw.Application):
             self.on_prev_button_clicked(None)
         elif keyval == Gdk.KEY_space:
             self.expander_row.set_expanded(not self.expander_row.get_expanded())
+        elif keyval == Gdk.KEY_F11:
+            if self.is_fullscreen:
+                self.window.unfullscreen()
+            else:
+                self.window.fullscreen()
+            self.is_fullscreen = not self.is_fullscreen
         return True
 
 
