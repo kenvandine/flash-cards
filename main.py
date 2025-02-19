@@ -15,6 +15,8 @@ class FlashCardsApp(Adw.Application):
         self.flash_cards = {}
         self.term, self.definition = "", ""
         self.is_fullscreen = False
+        self.history_file = "file_history.json"
+        self.history = self.load_history()
 
         # Set Adwaita dark theme preference using Adw.StyleManager
         style_manager = Adw.StyleManager.get_default()
@@ -69,6 +71,11 @@ class FlashCardsApp(Adw.Application):
         self.box.set_margin_top(20)
         self.box.set_margin_bottom(20)
         self.window.set_child(self.box)
+
+        self.history_list = Gtk.ListBox()
+        self.box.append(Gtk.Label(label="File History"))
+        self.box.append(self.history_list)
+        self.load_history_list()
 
         self.expander_row = Adw.ExpanderRow()
         self.expander_row.add_css_class("term")
@@ -158,6 +165,7 @@ class FlashCardsApp(Adw.Application):
         file = file_dialog.open_finish(result)
         file_path = file.get_path()
         self.load_flash_cards(file_path)
+        self.add_to_history(file_path)
 
     def load_flash_cards(self, file_path):
         try:
@@ -171,6 +179,35 @@ class FlashCardsApp(Adw.Application):
                     self.on_expander_toggled(self.expander_row, None)
         except Exception as e:
             print(f"Failed to load flash cards: {e}")
+
+    def load_history(self):
+        if os.path.exists(self.history_file):
+            with open(self.history_file, "r") as file:
+                return json.load(file)
+        return []
+
+    def save_history(self):
+        with open(self.history_file, "w") as file:
+            json.dump(self.history, file)
+
+    def add_to_history(self, file_path):
+        self.history.append(file_path)
+        self.save_history()
+        self.load_history_list()
+
+    def load_history_list(self):
+        # Remove all existing rows
+        for row in list(self.history_list):
+            self.history_list.remove(row)
+
+        # Add new rows
+        for file_path in self.history:
+            row = Gtk.ListBoxRow()
+            box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+            label = Gtk.Label(label=file_path)
+            box.append(label)
+            row.set_child(box)
+            self.history_list.append(row)
 
 
 if __name__ == "__main__":
