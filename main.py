@@ -1,33 +1,18 @@
 import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import Gtk, Gdk, Adw
+from gi.repository import Gtk, Gdk, Adw, Gio
 import random
 import os
-
-# Sample dictionary for terms and definitions
-flash_cards = {
-    "Separation of Powers": "A principle of governance in which the executive, legislative, and judicial branches of government are distinct and separate entities.",
-    "Checks and Balances": "A system in which each branch of government has the ability to limit the powers of the other branches to prevent any one branch from becoming too powerful.",
-    "Federalism": "A political system in which power is divided between a central government and regional governments (states).",
-    "Judicial Review": "The power of the courts to declare laws and executive actions unconstitutional.",
-    "Bill of Rights": "The first ten amendments to the United States Constitution, which guarantee fundamental rights and freedoms.",
-    "Electoral College": "A body of electors established by the United States Constitution, which formally elects the President and Vice President.",
-    "Lobbying": "The practice of influencing public policy and decision-making through direct contact with lawmakers and government officials.",
-    "Gerrymandering": "The manipulation of electoral district boundaries for political advantage, often to favor one party over another.",
-    "Filibuster": "A tactic used in the United States Senate to delay or block legislative action by extending debate.",
-    "Supremacy Clause": "A clause in the United States Constitution (Article VI, Clause 2) that establishes the Constitution, federal laws, and treaties as the supreme law of the land."
-}
-
-# Convert the dictionary to a list of tuples for easier navigation
-flash_card_list = list(flash_cards.items())
-current_index = 0
+import json
 
 class FlashCardsApp(Adw.Application):
     def __init__(self):
         super().__init__()
         self.connect("activate", self.on_activate)
-        self.term, self.definition = flash_card_list[current_index]
+        self.flash_cards = {}
+        self.term, self.definition = "", ""
+        self.is_fullscreen = False
 
         # Set Adwaita dark theme preference using Adw.StyleManager
         style_manager = Adw.StyleManager.get_default()
@@ -41,7 +26,6 @@ class FlashCardsApp(Adw.Application):
             css_provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
         )
-        self.is_fullscreen = False
 
     def on_activate(self, app):
         self.window = Gtk.ApplicationWindow(application=app, title="Flash Cards")
@@ -50,17 +34,22 @@ class FlashCardsApp(Adw.Application):
         # Create HeaderBar
         header_bar = Gtk.HeaderBar()
         header_bar.set_show_title_buttons(True)
-        title_label = Gtk.Label(label="Flash Card App")
+        title_label = Gtk.Label(label="Flash Cards")
         header_bar.set_title_widget(title_label)
         self.window.set_titlebar(header_bar)
 
-        self.prev_button = Gtk.Button(label="Previous")
-        self.prev_button.connect("clicked", self.on_prev_button_clicked)
-        header_bar.pack_start(self.prev_button)
+        # Create and connect the file picker button
+        file_picker_button = Gtk.Button(label="Open Flash Cards File")
+        file_picker_button.connect("clicked", self.on_open_file_clicked)
+        header_bar.pack_start(file_picker_button)
 
         self.next_button = Gtk.Button(label="Next")
         self.next_button.connect("clicked", self.on_next_button_clicked)
         header_bar.pack_end(self.next_button)
+
+        self.prev_button = Gtk.Button(label="Previous")
+        self.prev_button.connect("clicked", self.on_prev_button_clicked)
+        header_bar.pack_end(self.prev_button)
 
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         self.box.set_margin_start(20)
@@ -71,8 +60,8 @@ class FlashCardsApp(Adw.Application):
 
         self.expander_row = Adw.ExpanderRow()
         self.expander_row.add_css_class("term")
-        self.expander_row.set_title(f"<b>{self.term}</b>")
-        self.expander_row.set_subtitle(f"<b>Tap to flip</b>")
+        self.expander_row.set_title(f"<b>Open Flash Card File</b>")
+        self.expander_row.set_subtitle(f"")
         self.expander_row.connect("notify::expanded", self.on_expander_toggled)
         self.box.append(self.expander_row)
 
@@ -87,23 +76,25 @@ class FlashCardsApp(Adw.Application):
         if expander_row.get_expanded():
             expander_row.set_subtitle(f"<b>{self.definition}</b>")
         else:
-            expander_row.set_subtitle("Tap to flip")
+            expander_row.set_subtitle("Tap to show")
 
     def on_next_button_clicked(self, button):
-        self.expander_row.set_expanded(False)
-        global current_index
-        current_index = (current_index + 1) % len(flash_card_list)
-        self.term, self.definition = flash_card_list[current_index]
-        self.expander_row.set_title(f"<b>{self.term}</b>")
-        self.expander_row.set_subtitle("Tap to flip")
+        if self.flash_cards:
+            self.expander_row.set_expanded(False)
+            global current_index
+            current_index = (current_index + 1) % len(self.flash_cards)
+            self.term, self.definition = list(self.flash_cards.items())[current_index]
+            self.expander_row.set_title(f"<b>{self.term}</b>")
+            self.expander_row.set_subtitle("Tap to show")
 
     def on_prev_button_clicked(self, button):
-        self.expander_row.set_expanded(False)
-        global current_index
-        current_index = (current_index - 1) % len(flash_card_list)
-        self.term, self.definition = flash_card_list[current_index]
-        self.expander_row.set_title(f"<b>{self.term}</b>")
-        self.expander_row.set_subtitle("Tap to flip")
+        if self.flash_cards:
+            self.expander_row.set_expanded(False)
+            global current_index
+            current_index = (current_index - 1) % len(self.flash_cards)
+            self.term, self.definition = list(self.flash_cards.items())[current_index]
+            self.expander_row.set_title(f"<b>{self.term}</b>")
+            self.expander_row.set_subtitle("Tap to show")
 
     def on_key_press(self, controller, keyval, keycode, state):
         if keyval == Gdk.KEY_Right:
@@ -119,6 +110,37 @@ class FlashCardsApp(Adw.Application):
                 self.window.fullscreen()
             self.is_fullscreen = not self.is_fullscreen
         return True
+
+    def on_open_file_clicked(self, button):
+        file_dialog = Gtk.FileDialog()
+        file_dialog.set_modal(True)
+        file_dialog.set_title("Open Flash Card File")
+        file_filter = Gtk.FileFilter()
+        file_filter.add_pattern("*.json")
+        file_filter.set_name("JSON files")
+        
+        # Set the filter to the dialog
+        file_dialog.set_default_filter(file_filter)
+
+        file_dialog.open(self.window, None, self.on_file_chosen)
+
+    def on_file_chosen(self, file_dialog, result):
+        file = file_dialog.open_finish(result)
+        file_path = file.get_path()
+        self.load_flash_cards(file_path)
+
+    def load_flash_cards(self, file_path):
+        try:
+            with open(file_path, "r") as file:
+                self.flash_cards = json.load(file)
+                if self.flash_cards:
+                    global current_index
+                    current_index = 0
+                    self.term, self.definition = list(self.flash_cards.items())[current_index]
+                    self.expander_row.set_title(f"<b>{self.term}</b>")
+                    self.on_expander_toggled(self.expander_row, None)
+        except Exception as e:
+            print(f"Failed to load flash cards: {e}")
 
 
 if __name__ == "__main__":
