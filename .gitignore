@@ -1,0 +1,4 @@
+*.snap
+*.pyc
+__pycache__/*
+.*.swp

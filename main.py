@@ -5,6 +5,8 @@ from gi.repository import Gtk, Gdk, Adw, Gio
 import random
 import os
 import json
+from about import show_about_dialog
+from editor import FlashCardEditor
 
 class FlashCardsApp(Adw.Application):
     def __init__(self):
@@ -27,6 +29,9 @@ class FlashCardsApp(Adw.Application):
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
         )
 
+        # Create actions for menu items
+        self.create_actions()
+
     def on_activate(self, app):
         self.window = Gtk.ApplicationWindow(application=app, title="Flash Cards")
         self.window.set_default_size(1024, 800)
@@ -42,6 +47,13 @@ class FlashCardsApp(Adw.Application):
         file_picker_button = Gtk.Button(label="Open Flash Cards File")
         file_picker_button.connect("clicked", self.on_open_file_clicked)
         header_bar.pack_start(file_picker_button)
+
+        menu_button = Gtk.MenuButton()
+        menu_model = Gio.Menu()
+        menu_model.append("Flash Card Editor", "app.editor")
+        menu_model.append("About", "app.about")
+        menu_button.set_menu_model(menu_model)
+        header_bar.pack_end(menu_button)
 
         self.next_button = Gtk.Button(label="Next")
         self.next_button.connect("clicked", self.on_next_button_clicked)
@@ -71,6 +83,24 @@ class FlashCardsApp(Adw.Application):
         self.window.add_controller(key_controller)
 
         self.window.present()
+
+    def create_actions(self):
+        action = Gio.SimpleAction.new("editor", None)
+        action.connect("activate", self.on_editor)
+        self.add_action(action)
+
+        action = Gio.SimpleAction.new("about", None)
+        action.connect("activate", self.on_about)
+        self.add_action(action)
+
+    def on_editor(self, action, param):
+        print("Editor Opened")
+        editor = FlashCardEditor()
+        editor.show()
+
+    def on_about(self, action, param):
+        win = self.get_active_window()
+        show_about_dialog(win)
 
     def on_expander_toggled(self, expander_row, gparam):
         if expander_row.get_expanded():

@@ -7,15 +7,20 @@ description: |
 
 grade: stable
 confinement: strict
+contact: https://github.com/kenvandine/flash-cards/issues
+issues: https://github.com/kenvandine/flash-cards/issues
+website: https://github.com/kenvandine/flash-cards
+license: GPL-3.0+
+icon: icon.png
 
 parts:
   flash-cards:
     plugin: nil
     source: .
     override-build: |
-      cp main.py $CRAFT_PART_INSTALL/
+      cp {main,editor,about}.py $CRAFT_PART_INSTALL/
       cp -rp css $CRAFT_PART_INSTALL/
-      cp flash-cards $CRAFT_PART_INSTALL/
+      cp {flash-cards,sample.json} $CRAFT_PART_INSTALL/
 
 apps:
   flash-cards:
