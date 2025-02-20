@@ -21,6 +21,7 @@ parts:
       cp {main,editor,about}.py $CRAFT_PART_INSTALL/
       cp -rp css $CRAFT_PART_INSTALL/
       cp {flash-cards,sample.json} $CRAFT_PART_INSTALL/
+      cp icon.png $CRAFT_PART_INSTALL/
 
 apps:
   flash-cards:
