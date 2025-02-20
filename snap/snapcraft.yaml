@@ -21,6 +21,10 @@ website: https://github.com/kenvandine/flash-cards
 license: GPL-3.0+
 icon: icon.png
 
+platforms:
+  amd64:
+  arm64:
+
 parts:
   flash-cards:
     plugin: nil
