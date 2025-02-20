@@ -15,7 +15,7 @@ class FlashCardsApp(Adw.Application):
         self.flash_cards = {}
         self.term, self.definition = "", ""
         self.is_fullscreen = False
-        self.history_file = "file_history.json"
+        self.history_file = os.path.join(self.get_cache_dir(), "history.json")
         self.history = self.load_history()
 
         # Set Adwaita dark theme preference using Adw.StyleManager
@@ -72,9 +72,13 @@ class FlashCardsApp(Adw.Application):
         self.box.set_margin_bottom(20)
         self.window.set_child(self.box)
 
-        self.history_list = Gtk.ListBox()
-        self.box.append(Gtk.Label(label="File History"))
+        self.history_list = Adw.ExpanderRow(title="Recent Decks")
         self.box.append(self.history_list)
+
+        # Wrap recent items in a content box
+        self.recent_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        self.history_list.add_row(self.recent_box)
+
         self.load_history_list()
 
         self.expander_row = Adw.ExpanderRow()
@@ -88,6 +92,9 @@ class FlashCardsApp(Adw.Application):
         key_controller = Gtk.EventControllerKey()
         key_controller.connect("key-pressed", self.on_key_press)
         self.window.add_controller(key_controller)
+
+        if len(self.history) > 0:
+            self.load_flash_cards(self.history[0])
 
         self.window.present()
 
@@ -165,9 +172,9 @@ class FlashCardsApp(Adw.Application):
         file = file_dialog.open_finish(result)
         file_path = file.get_path()
         self.load_flash_cards(file_path)
-        self.add_to_history(file_path)
 
     def load_flash_cards(self, file_path):
+        self.add_to_history(file_path)
         try:
             with open(file_path, "r") as file:
                 self.flash_cards = json.load(file)
@@ -184,6 +191,9 @@ class FlashCardsApp(Adw.Application):
         if os.path.exists(self.history_file):
             with open(self.history_file, "r") as file:
                 return json.load(file)
+        if os.environ.get("SNAP"):
+            sample_file = os.path.join(os.environ["SNAP"], "sample.json")
+            return [sample_file]
         return []
 
     def save_history(self):
@@ -191,24 +201,39 @@ class FlashCardsApp(Adw.Application):
             json.dump(self.history, file)
 
     def add_to_history(self, file_path):
-        self.history.append(file_path)
+        if file_path in self.history:
+            self.history.remove(file_path)
+        self.history.insert(0, file_path)
         self.save_history()
         self.load_history_list()
 
     def load_history_list(self):
         # Remove all existing rows
-        for row in list(self.history_list):
-            self.history_list.remove(row)
+        for row in list(self.recent_box):
+            self.recent_box.remove(row)
 
         # Add new rows
-        for file_path in self.history:
-            row = Gtk.ListBoxRow()
-            box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-            label = Gtk.Label(label=file_path)
-            box.append(label)
-            row.set_child(box)
-            self.history_list.append(row)
+        if len(self.history) > 0:
+            for file_path in self.history:
+                row = Adw.ActionRow(title=os.path.basename(file_path), activatable=True)
+                # Add a Gtk.GestureClick to handle the click event
+                gesture = Gtk.GestureClick()
+                gesture.connect("pressed", self.on_recent_selected, file_path)
+                row.add_controller(gesture)
+                self.recent_box.append(row)
 
+    def on_recent_selected(self, gesture, n_press, x, y, file_path):
+        self.load_flash_cards(file_path)
+        self.history_list.set_expanded(False)
+
+
+    def get_cache_dir(self):
+        # Get XDG_CACHE_HOME or fallback to ~/.cache
+        cache_dir = os.getenv('XDG_CACHE_HOME', os.path.expanduser('~/.cache'))
+        app_cache_dir = os.path.join(cache_dir, 'flash-cards')
+        if not os.path.exists(app_cache_dir):
+            os.makedirs(app_cache_dir)
+        return app_cache_dir
 
 if __name__ == "__main__":
     app = FlashCardsApp()
