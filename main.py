@@ -51,6 +51,7 @@ class FlashCardsApp(Adw.Application):
         # Create and connect the file picker button
         open_button = Gtk.Button(label="Open Flash Cards File")
         open_button.connect("clicked", self.on_open_file_clicked)
+        open_button.set_visible(len(self.flash_cards) > 0)
         header_bar.pack_start(open_button)
 
         self.save_button = Gtk.Button(label="Save")
@@ -60,6 +61,7 @@ class FlashCardsApp(Adw.Application):
 
         menu_button = Gtk.MenuButton()
         menu_model = Gio.Menu()
+        menu_model.append("New", "app.new")
         menu_model.append("Open", "app.open")
         menu_model.append("Edit", "app.edit")
         menu_model.append("About", "app.about")
@@ -104,7 +106,7 @@ class FlashCardsApp(Adw.Application):
         delete_button = Gtk.Button(label="Delete")
         delete_button.connect("clicked", self.on_delete_clicked)
         new_button = Gtk.Button(label="New")
-        new_button.connect("clicked", self.on_new_clicked)
+        new_button.connect("clicked", self.new_card)
         self.button_box.append(save_button)
         self.button_box.append(delete_button)
         self.button_box.append(new_button)
@@ -121,7 +123,7 @@ class FlashCardsApp(Adw.Application):
         self.window.present()
 
     # Add item from model
-    def on_new_clicked(self, button):
+    def new_card(self, button):
         global current_index
         self.save_card(current_index)
         current_index = len(self.flash_cards) + 1
@@ -144,7 +146,7 @@ class FlashCardsApp(Adw.Application):
         definition = buffer.get_text(buffer.get_start_iter(),
                                      buffer.get_end_iter(),
                                      False)
-        if index is None or index > len(self.flash_cards):
+        if index is None or index > len(self.flash_cards) or len(self.flash_cards) == 0:
             self.flash_cards[term] = definition
         else:
             # Replace key and value at index
@@ -153,9 +155,17 @@ class FlashCardsApp(Adw.Application):
             self.flash_cards = dict(cards_list)
 
     def create_actions(self):
-        action = Gio.SimpleAction.new_stateful("edit", None, GLib.Variant.new_boolean(False))
-        action.connect("change-state", self.on_edit_mode)
+        action = Gio.SimpleAction.new("new", None)
+        action.connect("activate", self.on_new_file_clicked)
         self.add_action(action)
+
+        action = Gio.SimpleAction.new("open", None)
+        action.connect("activate", self.on_open_file_clicked)
+        self.add_action(action)
+
+        self.edit_action = Gio.SimpleAction.new_stateful("edit", None, GLib.Variant.new_boolean(False))
+        self.edit_action.connect("change-state", self.on_edit_mode)
+        self.add_action(self.edit_action)
 
         action = Gio.SimpleAction.new("about", None)
         action.connect("activate", self.on_about)
@@ -233,7 +243,19 @@ class FlashCardsApp(Adw.Application):
             self.is_fullscreen = not self.is_fullscreen
         return True
 
-    def on_open_file_clicked(self, button):
+    def on_new_file_clicked(self, action, param):
+        self.edit = True
+        self.edit_action.set_state(GLib.Variant.new_boolean(self.edit))
+        self.flash_cards = {}
+        self.box.remove(self.card)
+        self.card = EditCard()
+        self.save_button.set_visible(True)
+        self.card.term, self.card.definition = "", ""
+        self.card.update()
+        self.box.insert_child_after(self.card, self.history_list)
+        self.button_box.set_visible(self.edit)
+
+    def on_open_file_clicked(self, action, param):
         file_dialog = Gtk.FileDialog()
         file_dialog.set_modal(True)
         file_dialog.set_title("Open Flash Card File")
@@ -270,6 +292,7 @@ class FlashCardsApp(Adw.Application):
     def on_save_file_chosen(self, file_dialog, result):
         file = file_dialog.save_finish(result)
         file_path = file.get_path()
+        self.add_to_history(file_path)
         with open(file_path, "w") as f:
             json.dump(self.flash_cards, f, indent=4)
 
