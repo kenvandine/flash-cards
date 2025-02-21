@@ -6,8 +6,7 @@ import random
 import os
 import json
 from about import show_about_dialog
-from editor import FlashCardEditor
-from card import FlashCard
+from flashcard import FlashCard
 from editcard import EditCard
 
 class FlashCardsApp(Adw.Application):
