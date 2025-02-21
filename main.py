@@ -287,6 +287,13 @@ class FlashCardsApp(Adw.Application):
 
         # Set the filter to the dialog
         file_dialog.set_default_filter(file_filter)
+        filter_list_store = Gio.ListStore.new(Gtk.FileFilter)
+        filter_list_store.append(file_filter)
+
+        # Set the filter for the file dialog
+        file_dialog.set_filters(filter_list_store)
+        file_dialog.set_initial_name("untitled.json")
+
 
         file_dialog.save(self.window, None, self.on_save_file_chosen)
 
