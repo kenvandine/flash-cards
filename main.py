@@ -207,7 +207,7 @@ class FlashCardsApp(Adw.Application):
                 else:
                     self.save_card(None)
             if len(self.flash_cards) > 0:
-                current_index = (current_index + 1) % len(self.flash_cards)
+                current_index = (current_index + 1) % len(list(self.flash_cards.items()))
                 self.card.term, self.card.definition = list(self.flash_cards.items())[current_index]
         else:
             self.card.term, self.card.definition = "", ""
@@ -226,7 +226,7 @@ class FlashCardsApp(Adw.Application):
                 else:
                     self.save_card(None)
             if len(self.flash_cards) > 0:
-                current_index = (current_index - 1) % len(self.flash_cards)
+                current_index = (current_index - 1) % len(list(self.flash_cards.items()))
                 self.card.term, self.card.definition = list(self.flash_cards.items())[current_index]
             else:
                 self.card.term, self.card.definition = "", ""
