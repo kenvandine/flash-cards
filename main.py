@@ -13,7 +13,7 @@ class FlashCardsApp(Adw.Application):
     def __init__(self):
         super().__init__()
         self.connect("activate", self.on_activate)
-        self.deck_title = None
+        self.deck_title = ""
         self.data = {}
         self.flash_cards = {}
         self.term, self.definition = "", ""
@@ -94,9 +94,19 @@ class FlashCardsApp(Adw.Application):
         self.load_history_list()
 
         if self.edit:
+            self.deck_title_label = Adw.EntryRow(title="Deck Title", text=self.deck_title)
+            self.deck_title_label.set_show_apply_button(True)
+            self.deck_title_label.connect("apply", self.on_deck_title_changed)
+        else:
+            self.deck_title_label = Gtk.Label(label=self.deck_title)
+        self.deck_title_label.add_css_class("decktitle")
+        self.box.append(self.deck_title_label)
+
+        if self.edit:
             self.card = EditCard()
         else:
             self.card = FlashCard()
+
 
         self.box.append(self.card)
 
@@ -122,6 +132,9 @@ class FlashCardsApp(Adw.Application):
             self.load_flash_cards(file_path)
 
         self.window.present()
+
+    def on_deck_title_changed(self, entry):
+        self.deck_title = self.deck_title_label.get_text()
 
     # Add item from model
     def new_card(self, button):
@@ -179,15 +192,21 @@ class FlashCardsApp(Adw.Application):
         term = self.card.term
         definition = self.card.definition
         self.box.remove(self.card)
+        self.box.remove(self.deck_title_label)
         if self.edit:
             self.card = EditCard()
             self.save_button.set_visible(True)
+            self.deck_title_label = Adw.EntryRow(title="Deck Title", text=self.deck_title)
+            self.deck_title_label.set_show_apply_button(True)
+            self.deck_title_label.connect("apply", self.on_deck_title_changed)
         else:
             self.card = FlashCard()
             self.save_button.set_visible(False)
+            self.deck_title_label = Gtk.Label(label=self.deck_title)
         self.card.term, self.card.definition = term, definition
         self.card.update()
-        self.box.insert_child_after(self.card, self.history_list)
+        self.box.insert_child_after(self.deck_title_label, self.history_list)
+        self.box.insert_child_after(self.card, self.deck_title_label)
         self.button_box.set_visible(self.edit)
 
     def on_about(self, action, param):
@@ -315,6 +334,10 @@ class FlashCardsApp(Adw.Application):
                 self.data = json.load(file)
                 if self.data:
                     self.deck_title = list(self.data.items())[0][0]
+                    if self.edit:
+                        self.deck_title_label.set_label(self.deck_title)
+                    else:
+                        self.deck_title_label.set_text(self.deck_title)
                     self.flash_cards = self.data[self.deck_title]
                     self.add_to_history(self.deck_title, file_path)
                     global current_index
