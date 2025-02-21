@@ -4,5 +4,9 @@
 .definition {
     font-size: 36px;
 }
-
-
+.editterm {
+    font-size: 24px;
+}
+.editdefinition {
+    font-size: 18px;
+}
