@@ -30,7 +30,7 @@ parts:
     plugin: nil
     source: .
     override-build: |
-      cp {main,editor,about}.py $CRAFT_PART_INSTALL/
+      cp *.py $CRAFT_PART_INSTALL/
       cp -rp css $CRAFT_PART_INSTALL/
       cp {flash-cards,sample.json} $CRAFT_PART_INSTALL/
       cp icon.png $CRAFT_PART_INSTALL/
