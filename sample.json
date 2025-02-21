@@ -1,4 +1,4 @@
-{
+{"Sample": {
     "Separation of Powers": "A principle of governance in which the executive, legislative, and judicial branches of government are distinct and separate entities.",
     "Checks and Balances": "A system in which each branch of government has the ability to limit the powers of the other branches to prevent any one branch from becoming too powerful.",
     "Federalism": "A political system in which power is divided between a central government and regional governments (states).",
@@ -9,4 +9,5 @@
     "Gerrymandering": "The manipulation of electoral district boundaries for political advantage, often to favor one party over another.",
     "Filibuster": "A tactic used in the United States Senate to delay or block legislative action by extending debate.",
     "Supremacy Clause": "A clause in the United States Constitution (Article VI, Clause 2) that establishes the Constitution, federal laws, and treaties as the supreme law of the land."
+	}
 }

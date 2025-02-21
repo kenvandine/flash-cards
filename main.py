@@ -13,6 +13,8 @@ class FlashCardsApp(Adw.Application):
     def __init__(self):
         super().__init__()
         self.connect("activate", self.on_activate)
+        self.deck_title = None
+        self.data = {}
         self.flash_cards = {}
         self.term, self.definition = "", ""
         self.is_fullscreen = False
@@ -114,7 +116,10 @@ class FlashCardsApp(Adw.Application):
         self.window.add_controller(key_controller)
 
         if len(self.history) > 0:
-            self.load_flash_cards(self.history[0])
+            item = self.history[0]
+            title = list(item.keys())[0]
+            file_path = item[title]
+            self.load_flash_cards(file_path)
 
         self.window.present()
 
@@ -299,16 +304,19 @@ class FlashCardsApp(Adw.Application):
     def on_save_file_chosen(self, file_dialog, result):
         file = file_dialog.save_finish(result)
         file_path = file.get_path()
-        self.add_to_history(file_path)
+        self.add_to_history(self.deck_title, file_path)
         with open(file_path, "w") as f:
+            self.data[self.deck_title] = self.flash_cards
             json.dump(self.flash_cards, f, indent=4)
 
     def load_flash_cards(self, file_path):
-        self.add_to_history(file_path)
         try:
             with open(file_path, "r") as file:
-                self.flash_cards = json.load(file)
-                if self.flash_cards:
+                self.data = json.load(file)
+                if self.data:
+                    self.deck_title = list(self.data.items())[0][0]
+                    self.flash_cards = self.data[self.deck_title]
+                    self.add_to_history(self.deck_title, file_path)
                     global current_index
                     current_index = 0
                     self.card.term, self.card.definition = list(self.flash_cards.items())[current_index]
@@ -322,17 +330,17 @@ class FlashCardsApp(Adw.Application):
                 return json.load(file)
         if os.environ.get("SNAP"):
             sample_file = os.path.join(os.environ["SNAP"], "sample.json")
-            return [sample_file]
+            return [{"Sample": sample_file}]
         return []
 
     def save_history(self):
         with open(self.history_file, "w") as file:
             json.dump(self.history, file)
 
-    def add_to_history(self, file_path):
-        if file_path in self.history:
-            self.history.remove(file_path)
-        self.history.insert(0, file_path)
+    def add_to_history(self, title, file_path):
+        if {title: file_path} in self.history:
+            self.history.remove({title: file_path})
+        self.history.insert(0, {title: file_path})
         self.save_history()
         self.load_history_list()
 
@@ -343,15 +351,17 @@ class FlashCardsApp(Adw.Application):
 
         # Add new rows
         if len(self.history) > 0:
-            for file_path in self.history:
-                row = Adw.ActionRow(title=os.path.basename(file_path), activatable=True)
+            for item in self.history:
+                title = list(item.keys())[0]
+                file_path = item[title]
+                row = Adw.ActionRow(title=title, subtitle=os.path.basename(file_path), activatable=True)
                 # Add a Gtk.GestureClick to handle the click event
                 gesture = Gtk.GestureClick()
-                gesture.connect("pressed", self.on_recent_selected, file_path)
+                gesture.connect("pressed", self.on_recent_selected, title, file_path)
                 row.add_controller(gesture)
                 self.recent_box.append(row)
 
-    def on_recent_selected(self, gesture, n_press, x, y, file_path):
+    def on_recent_selected(self, gesture, n_press, x, y, title, file_path):
         self.load_flash_cards(file_path)
         if not self.edit:
             self.history_list.set_expanded(False)
