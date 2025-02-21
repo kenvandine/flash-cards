@@ -101,13 +101,10 @@ class FlashCardsApp(Adw.Application):
 
         self.button_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         self.button_box.set_visible(self.edit)
-        save_button = Gtk.Button(label="Save")
-        #save_button.connect("clicked", self.on_save_clicked)
         delete_button = Gtk.Button(label="Delete")
         delete_button.connect("clicked", self.on_delete_clicked)
         new_button = Gtk.Button(label="New")
         new_button.connect("clicked", self.new_card)
-        self.button_box.append(save_button)
         self.button_box.append(delete_button)
         self.button_box.append(new_button)
         self.box.append(self.button_box)
@@ -203,6 +200,8 @@ class FlashCardsApp(Adw.Application):
                 # In edit mode, save card on navigation
                 if current_index <= len(self.flash_cards):
                     self.save_card(current_index)
+                else:
+                    self.save_card(None)
             if len(self.flash_cards) > 0:
                 current_index = (current_index + 1) % len(self.flash_cards)
                 self.card.term, self.card.definition = list(self.flash_cards.items())[current_index]
@@ -220,6 +219,8 @@ class FlashCardsApp(Adw.Application):
                 # In edit mode, save card on navigation
                 if current_index <= len(self.flash_cards):
                     self.save_card(current_index)
+                else:
+                    self.save_card(None)
             if len(self.flash_cards) > 0:
                 current_index = (current_index - 1) % len(self.flash_cards)
                 self.card.term, self.card.definition = list(self.flash_cards.items())[current_index]
