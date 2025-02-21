@@ -49,23 +49,29 @@ class FlashCardsApp(Adw.Application):
         self.window.set_titlebar(header_bar)
 
         # Create and connect the file picker button
-        file_picker_button = Gtk.Button(label="Open Flash Cards File")
-        file_picker_button.connect("clicked", self.on_open_file_clicked)
-        header_bar.pack_start(file_picker_button)
+        open_button = Gtk.Button(label="Open Flash Cards File")
+        open_button.connect("clicked", self.on_open_file_clicked)
+        header_bar.pack_start(open_button)
+
+        self.save_button = Gtk.Button(label="Save")
+        self.save_button.connect("clicked", self.on_save_file_clicked)
+        self.save_button.set_visible(False)
+        header_bar.pack_start(self.save_button)
 
         menu_button = Gtk.MenuButton()
         menu_model = Gio.Menu()
+        menu_model.append("Open", "app.open")
         menu_model.append("Edit", "app.edit")
         menu_model.append("About", "app.about")
         menu_button.set_menu_model(menu_model)
         header_bar.pack_end(menu_button)
 
         self.next_button = Gtk.Button(label="Next")
-        self.next_button.connect("clicked", self.on_next_clicked)
+        self.next_button.connect("clicked", self.on_next)
         header_bar.pack_end(self.next_button)
 
         self.prev_button = Gtk.Button(label="Previous")
-        self.prev_button.connect("clicked", self.on_prev_clicked)
+        self.prev_button.connect("clicked", self.on_prev)
         header_bar.pack_end(self.prev_button)
 
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
@@ -94,7 +100,7 @@ class FlashCardsApp(Adw.Application):
         self.button_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         self.button_box.set_visible(self.edit)
         save_button = Gtk.Button(label="Save")
-        save_button.connect("clicked", self.on_save_clicked)
+        #save_button.connect("clicked", self.on_save_clicked)
         delete_button = Gtk.Button(label="Delete")
         delete_button.connect("clicked", self.on_delete_clicked)
         new_button = Gtk.Button(label="New")
@@ -116,27 +122,35 @@ class FlashCardsApp(Adw.Application):
 
     # Add item from model
     def on_new_clicked(self, button):
-        if self.edit:
-            self.card.term = ""
-            self.card.definition = ""
-            self.card.update()
+        global current_index
+        self.save_card(current_index)
+        current_index = len(self.flash_cards) + 1
+        self.card.term = ""
+        self.card.definition = ""
+        self.card.update()
 
     # Delete item from model
     def on_delete_clicked(self, button):
-        if self.edit:
-            term = self.card.term_entry.get_text()
+        term = self.card.term_entry.get_text()
+        if term in self.flash_cards.keys():
             del self.flash_cards[term]
-            self.on_next_clicked(None)
+        self.on_prev(None)
 
     # Save edited item in model
-    def on_save_clicked(self, button):
-        if self.edit:
-            term = self.card.term_entry.get_text()
-            buffer = self.card.definition_view.get_buffer()
-            definition = buffer.get_text(buffer.get_start_iter(),
-                                         buffer.get_end_iter(),
-                                         False)
+    def save_card(self, index=None):
+        print(f"save_card {index}")
+        term = self.card.term_entry.get_text()
+        buffer = self.card.definition_view.get_buffer()
+        definition = buffer.get_text(buffer.get_start_iter(),
+                                     buffer.get_end_iter(),
+                                     False)
+        if index is None or index > len(self.flash_cards):
             self.flash_cards[term] = definition
+        else:
+            # Replace key and value at index
+            cards_list = list(self.flash_cards.items())
+            cards_list[index] = (term, definition)
+            self.flash_cards = dict(cards_list)
 
     def create_actions(self):
         action = Gio.SimpleAction.new_stateful("edit", None, GLib.Variant.new_boolean(False))
@@ -156,8 +170,10 @@ class FlashCardsApp(Adw.Application):
         self.box.remove(self.card)
         if self.edit:
             self.card = EditCard()
+            self.save_button.set_visible(True)
         else:
             self.card = FlashCard()
+            self.save_button.set_visible(False)
         self.card.term, self.card.definition = term, definition
         self.card.update()
         self.box.insert_child_after(self.card, self.history_list)
@@ -167,11 +183,16 @@ class FlashCardsApp(Adw.Application):
         win = self.get_active_window()
         show_about_dialog(win)
 
-    def on_next_clicked(self, button):
+    def on_next(self, button):
         if self.flash_cards:
-            if not self.edit:
-                self.card.set_expanded(False)
             global current_index
+            if not self.edit:
+                # Ensure we hide the definition when the card is shown
+                self.card.set_expanded(False)
+            else:
+                # In edit mode, save card on navigation
+                if current_index <= len(self.flash_cards):
+                    self.save_card(current_index)
             if len(self.flash_cards) > 0:
                 current_index = (current_index + 1) % len(self.flash_cards)
                 self.card.term, self.card.definition = list(self.flash_cards.items())[current_index]
@@ -179,11 +200,16 @@ class FlashCardsApp(Adw.Application):
             self.card.term, self.card.definition = "", ""
         self.card.update()
 
-    def on_prev_clicked(self, button):
+    def on_prev(self, button):
         if self.flash_cards:
-            if not self.edit:
-                self.card.set_expanded(False)
             global current_index
+            if not self.edit:
+                # Ensure we hide the definition when the card is shown
+                self.card.set_expanded(False)
+            else:
+                # In edit mode, save card on navigation
+                if current_index <= len(self.flash_cards):
+                    self.save_card(current_index)
             if len(self.flash_cards) > 0:
                 current_index = (current_index - 1) % len(self.flash_cards)
                 self.card.term, self.card.definition = list(self.flash_cards.items())[current_index]
@@ -193,9 +219,9 @@ class FlashCardsApp(Adw.Application):
 
     def on_key_press(self, controller, keyval, keycode, state):
         if keyval == Gdk.KEY_Right:
-            self.on_next_clicked(None)
+            self.on_next(None)
         elif keyval == Gdk.KEY_Left:
-            self.on_prev_clicked(None)
+            self.on_prev(None)
         elif keyval == Gdk.KEY_space:
             if not self.edit:
                 self.card.set_expanded(not self.card.get_expanded())
@@ -224,6 +250,28 @@ class FlashCardsApp(Adw.Application):
         file = file_dialog.open_finish(result)
         file_path = file.get_path()
         self.load_flash_cards(file_path)
+
+    def on_save_file_clicked(self, button):
+        global current_index
+        self.save_card(current_index)
+        file_dialog = Gtk.FileDialog()
+        file_dialog.set_modal(True)
+        file_dialog.set_title("Save Flash Card File")
+
+        file_filter = Gtk.FileFilter()
+        file_filter.add_pattern("*.json")
+        file_filter.set_name("JSON files")
+
+        # Set the filter to the dialog
+        file_dialog.set_default_filter(file_filter)
+
+        file_dialog.save(self.window, None, self.on_save_file_chosen)
+
+    def on_save_file_chosen(self, file_dialog, result):
+        file = file_dialog.save_finish(result)
+        file_path = file.get_path()
+        with open(file_path, "w") as f:
+            json.dump(self.flash_cards, f, indent=4)
 
     def load_flash_cards(self, file_path):
         self.add_to_history(file_path)
