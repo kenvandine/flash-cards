@@ -40,9 +40,6 @@ class FlashCard(Adw.Bin):
         box.append(self.back_revealer)
         box.append(self.front_revealer)
 
-        flip_button = Gtk.Button(label="Flip")
-        flip_button.connect("clicked", self.flip)
-        box.append(flip_button)
         self.set_child(box)
 
     def flip(self, button, action=None, param=None, foo=None):
