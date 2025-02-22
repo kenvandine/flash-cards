@@ -205,7 +205,6 @@ class FlashCardsApp(Adw.Application):
             self.deck_title_label = Gtk.Label(label=self.deck_title)
         self.deck_title_label.add_css_class("decktitle")
         self.card.term, self.card.definition = term, definition
-        print(f"on_edit_mode: {self.card.term} {self.card.definition}")
         self.card.update()
         self.box.insert_child_after(self.deck_title_label, self.history_list)
         self.box.insert_child_after(self.card, self.deck_title_label)
@@ -273,9 +272,12 @@ class FlashCardsApp(Adw.Application):
         self.edit = True
         self.edit_action.set_state(GLib.Variant.new_boolean(self.edit))
         self.flash_cards = {}
+        global current_index
+        current_index = 0
         self.box.remove(self.card)
+        self.box.remove(self.deck_title_label)
         self.card = EditCard()
-        self.deck_title_label = Adw.EntryRow(title="Deck Title", text=self.deck_title)
+        self.deck_title_label = Adw.EntryRow(title="Deck Title", text="Enter Name For Deck")
         self.deck_title_label.set_show_apply_button(True)
         self.deck_title_label.connect("apply", self.on_deck_title_changed)
         self.save_button.set_visible(True)
@@ -343,6 +345,7 @@ class FlashCardsApp(Adw.Application):
             self.data = {}
             self.data[self.deck_title] = self.flash_cards
             json.dump(self.data, f, indent=4)
+        self.load_flash_cards(file_path)
 
     def load_flash_cards(self, file_path):
         try:
@@ -351,9 +354,9 @@ class FlashCardsApp(Adw.Application):
                 if self.data:
                     self.deck_title = list(self.data.items())[0][0]
                     if self.edit:
-                        self.deck_title_label.set_label(self.deck_title)
-                    else:
                         self.deck_title_label.set_text(self.deck_title)
+                    else:
+                        self.deck_title_label.set_label(self.deck_title)
                     self.flash_cards = self.data[self.deck_title]
                     self.add_to_history(self.deck_title, file_path)
                     global current_index
