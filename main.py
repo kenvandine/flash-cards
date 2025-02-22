@@ -336,6 +336,7 @@ class FlashCardsApp(Adw.Application):
         file_path = file.get_path()
         self.add_to_history(self.deck_title, file_path)
         with open(file_path, "w") as f:
+            self.data = {}
             self.data[self.deck_title] = self.flash_cards
             json.dump(self.data, f, indent=4)
 
