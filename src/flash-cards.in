@@ -1,0 +1,3 @@
+#!/bin/bash
+
+$SNAP/gnome-platform/usr/bin/python3.12 $SNAP/usr/share/flash-cards/flash_cards/app.py

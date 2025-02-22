@@ -1,6 +1,5 @@
 name: flash-cards
-base: core24
-version: '0.1'
+adopt-info: flash-cards
 summary: Flash Cards
 description: |
   Flash Cards provides a simple interface for reviewing that ever so
@@ -15,6 +14,7 @@ description: |
 
 grade: stable
 confinement: strict
+base: core24
 contact: https://github.com/kenvandine/flash-cards/issues
 issues: https://github.com/kenvandine/flash-cards/issues
 website: https://github.com/kenvandine/flash-cards
@@ -27,17 +27,23 @@ platforms:
 
 parts:
   flash-cards:
-    plugin: nil
+    plugin: meson
     source: .
-    override-build: |
-      cp *.py $CRAFT_PART_INSTALL/
-      cp -rp css $CRAFT_PART_INSTALL/
-      cp {flash-cards,sample.json} $CRAFT_PART_INSTALL/
+    meson-parameters: [ --prefix=/usr ]
+    override-pull: |
+      craftctl default
+      craftctl set version=$(cat meson.build | grep "version: " | awk -F "'" '{print $4}')
       cp icon.png $CRAFT_PART_INSTALL/
+      mkdir -p $CRAFT_PART_INSTALL/usr/share/flash-cards/flash_cards
+      cp icon.png $CRAFT_PART_INSTALL/usr/share/flash-cards/flash_cards/
+      cp sample.json $CRAFT_PART_INSTALL/
+    override-build: |
+      craftctl default
+      sed -i 's#/snap/gnome-46-2404-sdk/current/usr/bin/python3.*$#/snap/flash-cards/current/gnome-platform/usr/bin/python3.12#g' $CRAFT_PART_INSTALL/usr/bin/flash-cards
 
 apps:
   flash-cards:
-    command: flash-cards
+    command: usr/bin/flash-cards
     extensions: [ gnome ]
     plugs:
       - home
