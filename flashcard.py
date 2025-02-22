@@ -14,6 +14,7 @@ class FlashCard(Adw.ExpanderRow):
         self.connect("notify::expanded", self.on_expander_toggled)
 
     def update(self):
+        print("FlashCard: update")
         self.set_title(f"<b>{self.term}</b>")
         self.set_subtitle("Tap to show")
 

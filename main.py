@@ -205,6 +205,7 @@ class FlashCardsApp(Adw.Application):
             self.deck_title_label = Gtk.Label(label=self.deck_title)
         self.deck_title_label.add_css_class("decktitle")
         self.card.term, self.card.definition = term, definition
+        print(f"on_edit_mode: {self.card.term} {self.card.definition}")
         self.card.update()
         self.box.insert_child_after(self.deck_title_label, self.history_list)
         self.box.insert_child_after(self.card, self.deck_title_label)

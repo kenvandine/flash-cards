@@ -31,5 +31,6 @@ class EditCard(Adw.Bin):
         self.set_child(box)
 
     def update(self):
+        print("EditCard: update")
         self.term_entry.set_text(f"{self.term}")
         self.definition_view.get_buffer().set_text(f"{self.definition}")
