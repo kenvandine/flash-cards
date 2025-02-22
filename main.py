@@ -275,10 +275,14 @@ class FlashCardsApp(Adw.Application):
         self.flash_cards = {}
         self.box.remove(self.card)
         self.card = EditCard()
+        self.deck_title_label = Adw.EntryRow(title="Deck Title", text=self.deck_title)
+        self.deck_title_label.set_show_apply_button(True)
+        self.deck_title_label.connect("apply", self.on_deck_title_changed)
         self.save_button.set_visible(True)
         self.card.term, self.card.definition = "", ""
         self.card.update()
-        self.box.insert_child_after(self.card, self.history_list)
+        self.box.insert_child_after(self.deck_title_label, self.history_list)
+        self.box.insert_child_after(self.card, self.deck_title_label)
         self.button_box.set_visible(self.edit)
 
     def on_open_file_clicked(self, action, param):
