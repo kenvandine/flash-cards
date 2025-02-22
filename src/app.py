@@ -94,9 +94,9 @@ class FlashCardsApp(Adw.Application):
         self.load_history_list()
 
         if self.edit:
-            self.deck_title_label = Adw.EntryRow(title="Deck Title", text=self.deck_title)
-            self.deck_title_label.set_show_apply_button(True)
-            self.deck_title_label.connect("apply", self.on_deck_title_changed)
+            self.deck_title_label = Gtk.Entry(text=self.deck_title)
+            self.deck_title_label.set_placeholder_text("Deck Title")
+            self.deck_title_label.connect("changed", self.on_deck_title_changed)
         else:
             self.deck_title_label = Gtk.Label(label=self.deck_title)
         self.deck_title_label.add_css_class("decktitle")
@@ -134,7 +134,7 @@ class FlashCardsApp(Adw.Application):
         self.window.present()
 
     def on_deck_title_changed(self, entry):
-        self.deck_title = self.deck_title_label.get_text()
+        self.deck_title = entry.get_text()
 
     # Add item from model
     def new_card(self, button):
@@ -196,9 +196,9 @@ class FlashCardsApp(Adw.Application):
         if self.edit:
             self.card = EditCard()
             self.save_button.set_visible(True)
-            self.deck_title_label = Adw.EntryRow(title="Deck Title", text=self.deck_title)
-            self.deck_title_label.set_show_apply_button(True)
-            self.deck_title_label.connect("apply", self.on_deck_title_changed)
+            self.deck_title_label = Gtk.Entry(text=self.deck_title)
+            self.deck_title_label.set_placeholder_text("Deck Title")
+            self.deck_title_label.connect("changed", self.on_deck_title_changed)
         else:
             self.card = FlashCard()
             self.save_button.set_visible(False)
@@ -277,9 +277,9 @@ class FlashCardsApp(Adw.Application):
         self.box.remove(self.card)
         self.box.remove(self.deck_title_label)
         self.card = EditCard()
-        self.deck_title_label = Adw.EntryRow(title="Deck Title", text="Enter Name For Deck")
-        self.deck_title_label.set_show_apply_button(True)
-        self.deck_title_label.connect("apply", self.on_deck_title_changed)
+        self.deck_title_label = Gtk.Entry(text=self.deck_title)
+        self.deck_title_label.set_placeholder_text("Deck Title")
+        self.deck_title_label.connect("changed", self.on_deck_title_changed)
         self.save_button.set_visible(True)
         self.card.term, self.card.definition = "", ""
         self.card.update()
