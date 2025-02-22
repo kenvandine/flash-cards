@@ -98,7 +98,7 @@ class FlashCardsApp(Adw.Application):
             self.deck_title_label.set_placeholder_text("Deck Title")
             self.deck_title_label.connect("changed", self.on_deck_title_changed)
         else:
-            self.deck_title_label = Gtk.Label(label=self.deck_title)
+            self.deck_title_label = Gtk.Box()
         self.deck_title_label.add_css_class("decktitle")
         self.box.append(self.deck_title_label)
 
@@ -135,6 +135,7 @@ class FlashCardsApp(Adw.Application):
 
     def on_deck_title_changed(self, entry):
         self.deck_title = entry.get_text()
+        self.title_label.set_label(f"Flash Cards - {self.deck_title}")
 
     # Add item from model
     def new_card(self, button):
@@ -200,11 +201,11 @@ class FlashCardsApp(Adw.Application):
             self.deck_title_label = Gtk.Entry(text=self.deck_title)
             self.deck_title_label.set_placeholder_text("Deck Title")
             self.deck_title_label.connect("changed", self.on_deck_title_changed)
+            self.deck_title_label.add_css_class("decktitle")
         else:
             self.card = FlashCard(term=self.term, definition=self.definition)
             self.save_button.set_visible(False)
-            self.deck_title_label = Gtk.Label(label=self.deck_title)
-        self.deck_title_label.add_css_class("decktitle")
+            self.deck_title_label = Gtk.Box()
         self.card.term, self.card.definition = term, definition
         self.card.flipped = False
         self.card.update()
@@ -354,8 +355,7 @@ class FlashCardsApp(Adw.Application):
                     self.deck_title = list(self.data.items())[0][0]
                     if self.edit:
                         self.deck_title_label.set_text(self.deck_title)
-                    else:
-                        self.deck_title_label.set_label(self.deck_title)
+                    self.title_label.set_label(f"Flash Cards - {self.deck_title}")
                     self.flash_cards = self.data[self.deck_title]
                     self.add_to_history(self.deck_title, file_path)
                     global current_index
