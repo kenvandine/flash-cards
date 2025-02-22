@@ -203,6 +203,7 @@ class FlashCardsApp(Adw.Application):
             self.card = FlashCard()
             self.save_button.set_visible(False)
             self.deck_title_label = Gtk.Label(label=self.deck_title)
+        self.deck_title_label.add_css_class("decktitle")
         self.card.term, self.card.definition = term, definition
         self.card.update()
         self.box.insert_child_after(self.deck_title_label, self.history_list)
@@ -326,7 +327,7 @@ class FlashCardsApp(Adw.Application):
         self.add_to_history(self.deck_title, file_path)
         with open(file_path, "w") as f:
             self.data[self.deck_title] = self.flash_cards
-            json.dump(self.flash_cards, f, indent=4)
+            json.dump(self.data, f, indent=4)
 
     def load_flash_cards(self, file_path):
         try:
@@ -342,8 +343,9 @@ class FlashCardsApp(Adw.Application):
                     self.add_to_history(self.deck_title, file_path)
                     global current_index
                     current_index = 0
-                    self.card.term, self.card.definition = list(self.flash_cards.items())[current_index]
-                    self.card.update()
+                    if len(self.flash_cards) > 0:
+                        self.card.term, self.card.definition = list(self.flash_cards.items())[current_index]
+                        self.card.update()
         except Exception as e:
             print(f"Failed to load flash cards: {e}")
 
