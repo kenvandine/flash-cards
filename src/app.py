@@ -45,8 +45,8 @@ class FlashCardsApp(Adw.Application):
         # Create HeaderBar
         header_bar = Gtk.HeaderBar()
         header_bar.set_show_title_buttons(True)
-        title_label = Gtk.Label(label="Flash Cards")
-        header_bar.set_title_widget(title_label)
+        self.title_label = Gtk.Label(label="Flash Cards")
+        header_bar.set_title_widget(self.title_label)
         self.window.set_titlebar(header_bar)
 
         # Create and connect the file picker button
@@ -105,7 +105,7 @@ class FlashCardsApp(Adw.Application):
         if self.edit:
             self.card = EditCard()
         else:
-            self.card = FlashCard()
+            self.card = FlashCard(term=self.term, definition=self.definition)
 
 
         self.box.append(self.card)
@@ -143,6 +143,7 @@ class FlashCardsApp(Adw.Application):
         current_index = len(self.flash_cards) + 1
         self.card.term = ""
         self.card.definition = ""
+        self.card.flipped = False
         self.card.update()
 
     # Delete item from model
@@ -200,11 +201,12 @@ class FlashCardsApp(Adw.Application):
             self.deck_title_label.set_placeholder_text("Deck Title")
             self.deck_title_label.connect("changed", self.on_deck_title_changed)
         else:
-            self.card = FlashCard()
+            self.card = FlashCard(term=self.term, definition=self.definition)
             self.save_button.set_visible(False)
             self.deck_title_label = Gtk.Label(label=self.deck_title)
         self.deck_title_label.add_css_class("decktitle")
         self.card.term, self.card.definition = term, definition
+        self.card.flipped = False
         self.card.update()
         self.box.insert_child_after(self.deck_title_label, self.history_list)
         self.box.insert_child_after(self.card, self.deck_title_label)
@@ -217,10 +219,7 @@ class FlashCardsApp(Adw.Application):
     def on_next(self, button):
         if self.flash_cards:
             global current_index
-            if not self.edit:
-                # Ensure we hide the definition when the card is shown
-                self.card.set_expanded(False)
-            else:
+            if self.edit:
                 # In edit mode, save card on navigation
                 if current_index <= len(self.flash_cards):
                     self.save_card(current_index)
@@ -231,15 +230,13 @@ class FlashCardsApp(Adw.Application):
                 self.card.term, self.card.definition = list(self.flash_cards.items())[current_index]
         else:
             self.card.term, self.card.definition = "", ""
+        self.card.flipped = False
         self.card.update()
 
     def on_prev(self, button):
         if self.flash_cards:
             global current_index
-            if not self.edit:
-                # Ensure we hide the definition when the card is shown
-                self.card.set_expanded(False)
-            else:
+            if self.edit:
                 # In edit mode, save card on navigation
                 if current_index <= len(self.flash_cards):
                     self.save_card(current_index)
@@ -250,6 +247,7 @@ class FlashCardsApp(Adw.Application):
                 self.card.term, self.card.definition = list(self.flash_cards.items())[current_index]
             else:
                 self.card.term, self.card.definition = "", ""
+            self.card.flipped = False
             self.card.update()
 
     def on_key_press(self, controller, keyval, keycode, state):
@@ -259,7 +257,7 @@ class FlashCardsApp(Adw.Application):
             self.on_prev(None)
         elif keyval == Gdk.KEY_space:
             if not self.edit:
-                self.card.set_expanded(not self.card.get_expanded())
+                self.card.flip(None)
         elif keyval == Gdk.KEY_F11:
             if self.is_fullscreen:
                 self.window.unfullscreen()
@@ -282,6 +280,7 @@ class FlashCardsApp(Adw.Application):
         self.deck_title_label.connect("changed", self.on_deck_title_changed)
         self.save_button.set_visible(True)
         self.card.term, self.card.definition = "", ""
+        self.card.flipped = False
         self.card.update()
         self.box.insert_child_after(self.deck_title_label, self.history_list)
         self.box.insert_child_after(self.card, self.deck_title_label)
@@ -363,6 +362,7 @@ class FlashCardsApp(Adw.Application):
                     current_index = 0
                     if len(self.flash_cards) > 0:
                         self.card.term, self.card.definition = list(self.flash_cards.items())[current_index]
+                        self.card.flipped = False
                         self.card.update()
         except Exception as e:
             print(f"Failed to load flash cards: {e}")
@@ -408,7 +408,6 @@ class FlashCardsApp(Adw.Application):
         self.load_flash_cards(file_path)
         if not self.edit:
             self.history_list.set_expanded(False)
-
 
     def get_cache_dir(self):
         # Get XDG_CACHE_HOME or fallback to ~/.cache
