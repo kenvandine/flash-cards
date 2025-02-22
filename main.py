@@ -292,6 +292,11 @@ class FlashCardsApp(Adw.Application):
         # Set the filter to the dialog
         file_dialog.set_default_filter(file_filter)
 
+        # Set the initial folder to the Documents directory
+        documents_folder = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DOCUMENTS)
+        if documents_folder:
+            file_dialog.set_initial_folder(Gio.File.new_for_path(documents_folder))
+
         file_dialog.open(self.window, None, self.on_file_chosen)
 
     def on_file_chosen(self, file_dialog, result):
@@ -319,6 +324,10 @@ class FlashCardsApp(Adw.Application):
         file_dialog.set_filters(filter_list_store)
         file_dialog.set_initial_name("untitled.json")
 
+        # Set the initial folder to the Documents directory
+        documents_folder = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DOCUMENTS)
+        if documents_folder:
+            file_dialog.set_initial_folder(Gio.File.new_for_path(documents_folder))
 
         file_dialog.save(self.window, None, self.on_save_file_chosen)
 
