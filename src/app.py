@@ -371,8 +371,8 @@ class FlashCardsApp(Adw.Application):
         if os.path.exists(self.history_file):
             with open(self.history_file, "r") as file:
                 return json.load(file)
-        if os.environ.get("SNAP"):
-            sample_file = os.path.join(os.environ["SNAP"], "sample.json")
+        if os.environ.get("SNAP_USER_COMMON"):
+            sample_file = os.path.join(os.environ["SNAP_USER_COMMON"], "sample.json")
             return [{"Sample": sample_file}]
         return []
 

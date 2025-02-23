@@ -1,3 +1,9 @@
 #!/bin/bash
 
+if [[ -v SNAP_USER_COMMON ]]; then
+	if [ ! -f $SNAP_USER_COMMON/sample.json ]; then
+		cp $SNAP/sample.json $SNAP_USER_COMMON/
+	fi
+fi
+
 $SNAP/gnome-platform/usr/bin/python3.12 $SNAP/usr/share/flash-cards/flash_cards/app.py
