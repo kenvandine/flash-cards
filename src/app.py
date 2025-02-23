@@ -84,8 +84,19 @@ class FlashCardsApp(Adw.Application):
         self.box.set_margin_bottom(20)
         self.window.set_child(self.box)
 
+        #Create horizontal box for the history and keyboard shortcuts expanders
+        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         self.history_list = Adw.ExpanderRow(title="Recent Decks")
-        self.box.append(self.history_list)
+        keyboard_shortcuts = Adw.ExpanderRow(title="Keyboard Shortcuts")
+        nav_shortcuts = Adw.ActionRow(title="Next and Previous", subtitle="Right and Left Arrows")
+        keyboard_shortcuts.add_row(nav_shortcuts)
+        show_shortcut = Adw.ActionRow(title="Show Definition", subtitle="Space")
+        keyboard_shortcuts.add_row(show_shortcut)
+        fullscreen_shortcut = Adw.ActionRow(title="Toggle Fullscreen", subtitle="F11")
+        keyboard_shortcuts.add_row(fullscreen_shortcut)
+        hbox.append(self.history_list)
+        hbox.append(keyboard_shortcuts)
+        self.box.append(hbox)
 
         # Wrap recent items in a content box
         self.recent_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
