@@ -1,0 +1,74 @@
+# English translations for PACKAGE package.
+# Copyright (C) 2025 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Drew VanDine <avandine23@gmail.com>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-28 16:09-0500\n"
+"PO-Revision-Date: 2025-02-28 16:11-0500\n"
+"Last-Translator: Drew VanDine <avandine23@gmail.com>\n"
+"Language-Team: English\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/app.py:58
+msgid "Open Flash Cards File"
+msgstr "Open Flash Cards File"
+
+#: src/app.py:63
+msgid "Save"
+msgstr "Save"
+
+#: src/app.py:70 src/app.py:122
+msgid "New"
+msgstr "New"
+
+#: src/app.py:71
+msgid "Open"
+msgstr "Open"
+
+#: src/app.py:72
+msgid "Edit"
+msgstr "Edit"
+
+#: src/app.py:73
+msgid "About"
+msgstr "About"
+
+#: src/app.py:77
+msgid "Next"
+msgstr "Next"
+
+#: src/app.py:81
+msgid "Previous"
+msgstr "Previous"
+
+#: src/app.py:92
+msgid "Recent Decks"
+msgstr "Recent Decks"
+
+#: src/app.py:120
+msgid "Delete"
+msgstr "Delete"
+
+#: src/flashcard.py:35
+msgid "Tap to Show"
+msgstr "Tap to Show"
+
+#: src/editcard.py:19
+msgid "Term"
+msgstr "Term"
+
+#: src/editcard.py:21
+msgid "Definition"
+msgstr "Definition"
+
+#: src/about.py:17
+msgid "A Flash Card view and editor"
+msgstr "A Flash Card view and editor"

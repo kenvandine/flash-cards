@@ -2,6 +2,11 @@ import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw, Pango
+import gettext
+
+gettext.bindtextdomain('flash-cards', 'locale')
+gettext.textdomain('flash-cards')
+_ = gettext.gettext
 
 class FlashCard(Adw.Bin):
     def __init__(self, term="", definition=""):
@@ -27,7 +32,7 @@ class FlashCard(Adw.Bin):
         self.back_revealer.set_transition_type(Gtk.RevealerTransitionType.CROSSFADE)
         self.back_revealer.set_transition_duration(2000)
 
-        self.front_label = Gtk.Label(label="Tap to Show")
+        self.front_label = Gtk.Label(label=_("Tap to Show"))
         self.front_label.add_css_class("definition")
         self.back_label = Gtk.Label(label=self.definition)
         self.back_label.add_css_class("definition")
