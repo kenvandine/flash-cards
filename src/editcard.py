@@ -4,8 +4,6 @@ gi.require_version("Adw", "1")
 from gi.repository import Gtk, Gdk, Adw, Gio
 import gettext
 
-gettext.bindtextdomain('flash-cards', 'locale')
-gettext.textdomain('flash-cards')
 _ = gettext.gettext
 
 class EditCard(Adw.Bin):
