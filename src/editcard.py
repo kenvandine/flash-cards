@@ -2,6 +2,9 @@ import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Gtk, Gdk, Adw, Gio
+import gettext
+
+_ = gettext.gettext
 
 class EditCard(Adw.Bin):
     def __init__(self):
@@ -11,9 +14,9 @@ class EditCard(Adw.Bin):
         self.add_css_class("editterm")
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
-        term_label = Gtk.Label(label="Term")
+        term_label = Gtk.Label(label=_("Term"))
         term_label.set_halign(Gtk.Align.START)
-        definition_label = Gtk.Label(label="Definition")
+        definition_label = Gtk.Label(label=_("Definition"))
         definition_label.set_halign(Gtk.Align.START)
         self.term_entry = Gtk.Entry(text=self.term)
         self.term_entry.add_css_class("editterm")

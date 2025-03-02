@@ -8,6 +8,12 @@ import json
 from about import show_about_dialog
 from flashcard import FlashCard
 from editcard import EditCard
+import gettext
+
+locales_dir = os.path.join(os.environ.get("SNAP"), "usr/share/locale")
+gettext.bindtextdomain('flash-cards', locales_dir)
+gettext.textdomain('flash-cards')
+_ = gettext.gettext
 
 class FlashCardsApp(Adw.Application):
     def __init__(self):
@@ -50,30 +56,30 @@ class FlashCardsApp(Adw.Application):
         self.window.set_titlebar(header_bar)
 
         # Create and connect the file picker button
-        open_button = Gtk.Button(label="Open Flash Cards File")
+        open_button = Gtk.Button(label=_("Open Flash Cards File"))
         open_button.connect("clicked", self.on_open_file_clicked)
         open_button.set_visible(len(self.flash_cards) > 0)
         header_bar.pack_start(open_button)
 
-        self.save_button = Gtk.Button(label="Save")
+        self.save_button = Gtk.Button(label=_("Save"))
         self.save_button.connect("clicked", self.on_save_file_clicked)
         self.save_button.set_visible(False)
         header_bar.pack_start(self.save_button)
 
         menu_button = Gtk.MenuButton()
         menu_model = Gio.Menu()
-        menu_model.append("New", "app.new")
-        menu_model.append("Open", "app.open")
-        menu_model.append("Edit", "app.edit")
-        menu_model.append("About", "app.about")
+        menu_model.append(_("New"), "app.new")
+        menu_model.append(_("Open"), "app.open")
+        menu_model.append(_("Edit"), "app.edit")
+        menu_model.append(_("About"), "app.about")
         menu_button.set_menu_model(menu_model)
         header_bar.pack_end(menu_button)
 
-        self.next_button = Gtk.Button(label="Next")
+        self.next_button = Gtk.Button(label=_("Next"))
         self.next_button.connect("clicked", self.on_next)
         header_bar.pack_end(self.next_button)
 
-        self.prev_button = Gtk.Button(label="Previous")
+        self.prev_button = Gtk.Button(label=_("Previous"))
         self.prev_button.connect("clicked", self.on_prev)
         header_bar.pack_end(self.prev_button)
 
@@ -84,7 +90,7 @@ class FlashCardsApp(Adw.Application):
         self.box.set_margin_bottom(20)
         self.window.set_child(self.box)
 
-        self.history_list = Adw.ExpanderRow(title="Recent Decks")
+        self.history_list = Adw.ExpanderRow(title=_("Recent Decks"))
         self.box.append(self.history_list)
 
         # Wrap recent items in a content box
@@ -112,9 +118,9 @@ class FlashCardsApp(Adw.Application):
 
         self.button_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         self.button_box.set_visible(self.edit)
-        delete_button = Gtk.Button(label="Delete")
+        delete_button = Gtk.Button(label=_("Delete"))
         delete_button.connect("clicked", self.on_delete_clicked)
-        new_button = Gtk.Button(label="New")
+        new_button = Gtk.Button(label=_("New"))
         new_button.connect("clicked", self.new_card)
         self.button_box.append(delete_button)
         self.button_box.append(new_button)
