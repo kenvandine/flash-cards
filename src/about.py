@@ -12,7 +12,7 @@ def show_about_dialog(parent):
     about_dialog.set_transient_for(parent)
     about_dialog.set_program_name("Flash Cards")
     about_dialog.set_version("0.1")
-    about_dialog.set_comments(_("A Flash Card view and editor"))
+    about_dialog.set_comments(_("A Flash Card viewer and editor"))
     about_dialog.set_authors(["Ken VanDine"])
     icon_path = os.path.dirname(os.path.realpath(__file__)) + "/icon.png"
     icon_file = Gio.File.new_for_path(icon_path)

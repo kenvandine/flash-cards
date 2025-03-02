@@ -1,0 +1,41 @@
+msgid "Open Flash Cards File"
+msgstr "Aperi File Flash Cards"
+
+msgid "Save"
+msgstr "Salvare"
+
+msgid "New"
+msgstr "Novum"
+
+msgid "Open"
+msgstr "Aperi"
+
+msgid "Edit"
+msgstr "Recensere"
+
+msgid "About"
+msgstr "De"
+
+msgid "Next"
+msgstr "Proximum"
+
+msgid "Previous"
+msgstr "Praecedens"
+
+msgid "Recent Decks"
+msgstr "Recens Cortem"
+
+msgid "Delete"
+msgstr "Delere"
+
+msgid "Tap to Show"
+msgstr "Tange ad Ostendere"
+
+msgid "Term"
+msgstr "Termin"
+
+msgid "Definition"
+msgstr "Definitio"
+
+msgid "A Flash Card viewer and editor"
+msgstr "Visor et Editor Flash Cards"

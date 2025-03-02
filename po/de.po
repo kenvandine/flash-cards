@@ -1,0 +1,41 @@
+msgid "Open Flash Cards File"
+msgstr "Flash Cards Datei öffnen"
+
+msgid "Save"
+msgstr "Speichern"
+
+msgid "New"
+msgstr "Neu"
+
+msgid "Open"
+msgstr "Öffnen"
+
+msgid "Edit"
+msgstr "Bearbeiten"
+
+msgid "About"
+msgstr "Über"
+
+msgid "Next"
+msgstr "Weiter"
+
+msgid "Previous"
+msgstr "Zurück"
+
+msgid "Recent Decks"
+msgstr "Letzte Decks"
+
+msgid "Delete"
+msgstr "Löschen"
+
+msgid "Tap to Show"
+msgstr "Tippen um zu zeigen"
+
+msgid "Term"
+msgstr "Begriff"
+
+msgid "Definition"
+msgstr "Definition"
+
+msgid "A Flash Card viewer and editor"
+msgstr "Ein Betrachter und Editor für Flashkarten"

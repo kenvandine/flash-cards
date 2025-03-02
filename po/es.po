@@ -71,5 +71,5 @@ msgid "Definition"
 msgstr "Definición"
 
 #: src/about.py:17
-msgid "A Flash Card view and editor"
-msgstr "Una vista y editor de tarjetas de memoria"
+msgid "A Flash Card viewer and editor"
+msgstr "Un visor y editor de tarjetas de memoria"

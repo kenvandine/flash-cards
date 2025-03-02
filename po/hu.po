@@ -1,0 +1,41 @@
+msgid "Open Flash Cards File"
+msgstr "Flash Cards fájl megnyitása"
+
+msgid "Save"
+msgstr "Mentés"
+
+msgid "New"
+msgstr "Új"
+
+msgid "Open"
+msgstr "Megnyitás"
+
+msgid "Edit"
+msgstr "Szerkesztés"
+
+msgid "About"
+msgstr "Névjegy"
+
+msgid "Next"
+msgstr "Következő"
+
+msgid "Previous"
+msgstr "Előző"
+
+msgid "Recent Decks"
+msgstr "Legutóbbi paklik"
+
+msgid "Delete"
+msgstr "Törlés"
+
+msgid "Tap to Show"
+msgstr "Érintse meg a megjelenítéshez"
+
+msgid "Term"
+msgstr "Fogalom"
+
+msgid "Definition"
+msgstr "Meghatározás"
+
+msgid "A Flash Card viewer and editor"
+msgstr "Flash Cards nézegető és szerkesztő"

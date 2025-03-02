@@ -33,13 +33,13 @@ parts:
     override-pull: |
       craftctl default
       craftctl set version=$(cat meson.build | grep "version: " | awk -F "'" '{print $4}')
-      cp icon.png $CRAFT_PART_INSTALL/
-      mkdir -p $CRAFT_PART_INSTALL/usr/share/flash-cards/flash_cards
-      cp icon.png $CRAFT_PART_INSTALL/usr/share/flash-cards/flash_cards/
-      cp sample.json $CRAFT_PART_INSTALL/
     override-build: |
       craftctl default
       sed -i 's#/snap/gnome-46-2404-sdk/current/usr/bin/python3.*$#/snap/flash-cards/current/gnome-platform/usr/bin/python3.12#g' $CRAFT_PART_INSTALL/usr/bin/flash-cards
+      cp $CRAFT_PART_SRC/icon.png $CRAFT_PART_INSTALL/
+      mkdir -p $CRAFT_PART_INSTALL/usr/share/flash-cards/flash_cards
+      cp $CRAFT_PART_SRC/icon.png $CRAFT_PART_INSTALL/usr/share/flash-cards/flash_cards/
+      cp $CRAFT_PART_SRC/sample.json $CRAFT_PART_INSTALL/
 
 apps:
   flash-cards:
