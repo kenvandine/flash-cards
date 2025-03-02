@@ -1,0 +1,2 @@
+#!/bin/bash
+xgettext --keyword=_ --output=po/flash-cards.pot -f po/POTFILES
