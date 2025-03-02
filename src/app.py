@@ -10,7 +10,8 @@ from flashcard import FlashCard
 from editcard import EditCard
 import gettext
 
-gettext.bindtextdomain('flash-cards', 'locale')
+locales_dir = os.path.join(os.environ.get("SNAP"), "usr/share/locale")
+gettext.bindtextdomain('flash-cards', locales_dir)
 gettext.textdomain('flash-cards')
 _ = gettext.gettext
 

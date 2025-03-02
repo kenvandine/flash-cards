@@ -5,8 +5,6 @@ from gi.repository import Gtk, Gdk, Gio
 import os
 import gettext
 
-gettext.bindtextdomain('flash-card', 'locale')
-gettext.textdomain('flash-card')
 _ = gettext.gettext
 
 def show_about_dialog(parent):

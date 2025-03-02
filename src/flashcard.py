@@ -4,8 +4,6 @@ gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw, Pango
 import gettext
 
-gettext.bindtextdomain('flash-cards', 'locale')
-gettext.textdomain('flash-cards')
 _ = gettext.gettext
 
 class FlashCard(Adw.Bin):
