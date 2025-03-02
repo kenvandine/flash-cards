@@ -1,5 +1,5 @@
 msgid "Open Flash Cards File"
-msgstr "Flash Cards-bestand openen"
+msgstr "Flashcards-bestand openen"
 
 msgid "Save"
 msgstr "Opslaan"
@@ -23,13 +23,19 @@ msgid "Previous"
 msgstr "Vorige"
 
 msgid "Recent Decks"
-msgstr "Recente decks"
+msgstr "Recente stapels"
 
 msgid "Delete"
 msgstr "Verwijderen"
 
-msgid "Tap to Show"
-msgstr "Tik om te tonen"
+msgid "Credits"
+msgstr "Credits"
+
+msgid "Created by"
+msgstr "Gemaakt door"
+
+msgid "A Flash Card viewer and editor"
+msgstr "Een Flashcards-viewer en editor"
 
 msgid "Term"
 msgstr "Term"
@@ -37,5 +43,5 @@ msgstr "Term"
 msgid "Definition"
 msgstr "Definitie"
 
-msgid "A Flash Card viewer and editor"
-msgstr "Een flashcard-viewer en -editor"
+msgid "Tap to Show"
+msgstr "Tik om te tonen"

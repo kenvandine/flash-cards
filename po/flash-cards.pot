@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-28 16:09-0500\n"
+"POT-Creation-Date: 2025-03-01 21:27-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,58 +17,66 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/app.py:58
+#: src/app.py:59
 msgid "Open Flash Cards File"
 msgstr ""
 
-#: src/app.py:63
+#: src/app.py:64
 msgid "Save"
 msgstr ""
 
-#: src/app.py:70 src/app.py:122
+#: src/app.py:71 src/app.py:123
 msgid "New"
 msgstr ""
 
-#: src/app.py:71
+#: src/app.py:72
 msgid "Open"
 msgstr ""
 
-#: src/app.py:72
+#: src/app.py:73
 msgid "Edit"
 msgstr ""
 
-#: src/app.py:73
+#: src/app.py:74 src/about.py:9
 msgid "About"
 msgstr ""
 
-#: src/app.py:77
+#: src/app.py:78
 msgid "Next"
 msgstr ""
 
-#: src/app.py:81
+#: src/app.py:82
 msgid "Previous"
 msgstr ""
 
-#: src/app.py:92
+#: src/app.py:93
 msgid "Recent Decks"
 msgstr ""
 
-#: src/app.py:120
+#: src/app.py:121
 msgid "Delete"
 msgstr ""
 
-#: src/flashcard.py:35
-msgid "Tap to Show"
+#: src/about.py:9
+msgid "Credits"
 msgstr ""
 
-#: src/editcard.py:19
+#: src/about.py:9
+msgid "Created by"
+msgstr ""
+
+#: src/about.py:16
+msgid "A Flash Card viewer and editor"
+msgstr ""
+
+#: src/editcard.py:17
 msgid "Term"
 msgstr ""
 
-#: src/editcard.py:21
+#: src/editcard.py:19
 msgid "Definition"
 msgstr ""
 
-#: src/about.py:17
-msgid "A Flash Card viewer and editor"
+#: src/flashcard.py:33
+msgid "Tap to Show"
 msgstr ""

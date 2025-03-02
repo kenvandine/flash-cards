@@ -18,58 +18,50 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/app.py:58
 msgid "Open Flash Cards File"
 msgstr "Abrir archivo de tarjetas de memoria"
 
-#: src/app.py:63
 msgid "Save"
 msgstr "Guardar"
 
-#: src/app.py:70 src/app.py:122
 msgid "New"
 msgstr "Nuevo"
 
-#: src/app.py:71
 msgid "Open"
 msgstr "Abrir"
 
-#: src/app.py:72
 msgid "Edit"
 msgstr "Editar"
 
-#: src/app.py:73
 msgid "About"
 msgstr "Acerca de"
 
-#: src/app.py:77
 msgid "Next"
 msgstr "Siguiente"
 
-#: src/app.py:81
 msgid "Previous"
 msgstr "Anterior"
 
-#: src/app.py:92
 msgid "Recent Decks"
 msgstr "Barajas recientes"
 
-#: src/app.py:120
 msgid "Delete"
 msgstr "Eliminar"
 
-#: src/flashcard.py:35
-msgid "Tap to Show"
-msgstr "Tocar para mostrar"
+msgid "Credits"
+msgstr "Créditos"
 
-#: src/editcard.py:19
+msgid "Created by"
+msgstr "Creado por"
+
+msgid "A Flash Card viewer and editor"
+msgstr "Un visor y editor de tarjetas de memoria"
+
 msgid "Term"
 msgstr "Término"
 
-#: src/editcard.py:21
 msgid "Definition"
 msgstr "Definición"
 
-#: src/about.py:17
-msgid "A Flash Card viewer and editor"
-msgstr "Un visor y editor de tarjetas de memoria"
+msgid "Tap to Show"
+msgstr "Toca para mostrar"

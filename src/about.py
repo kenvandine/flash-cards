@@ -6,6 +6,7 @@ import os
 import gettext
 
 _ = gettext.gettext
+extra_strings = [_("About"), _("Credits"), _("Created by")]
 
 def show_about_dialog(parent):
     about_dialog = Gtk.AboutDialog.new()

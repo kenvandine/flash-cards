@@ -1,5 +1,23 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-28 16:09-0500\n"
+"PO-Revision-Date: 2025-02-28 16:11-0500\n"
+"Language: pl_PL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 msgid "Open Flash Cards File"
-msgstr "Otwórz plik z fiszkami"
+msgstr "Otwórz plik fiszek"
 
 msgid "Save"
 msgstr "Zapisz"
@@ -28,14 +46,20 @@ msgstr "Ostatnie talie"
 msgid "Delete"
 msgstr "Usuń"
 
-msgid "Tap to Show"
-msgstr "Dotknij, aby pokazać"
+msgid "Credits"
+msgstr "Podziękowania"
+
+msgid "Created by"
+msgstr "Utworzone przez"
+
+msgid "A Flash Card viewer and editor"
+msgstr "Przeglądarka i edytor fiszek"
 
 msgid "Term"
-msgstr "Pojęcie"
+msgstr "Termin"
 
 msgid "Definition"
 msgstr "Definicja"
 
-msgid "A Flash Card viewer and editor"
-msgstr "Przeglądarka i edytor fiszek"
+msgid "Tap to Show"
+msgstr "Kliknij, aby wyświetlić"

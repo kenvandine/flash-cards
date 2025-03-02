@@ -28,8 +28,14 @@ msgstr "Recent Decks"
 msgid "Delete"
 msgstr "Delete"
 
-msgid "Tap to Show"
-msgstr "Tap to Show"
+msgid "Credits"
+msgstr "Credits"
+
+msgid "Created by"
+msgstr "Created by"
+
+msgid "A Flash Card viewer and editor"
+msgstr "A Flash Card viewer and editor"
 
 msgid "Term"
 msgstr "Term"
@@ -37,5 +43,5 @@ msgstr "Term"
 msgid "Definition"
 msgstr "Definition"
 
-msgid "A Flash Card viewer and editor"
-msgstr "A Flash Card viewer and editor"
+msgid "Tap to Show"
+msgstr "Tap to Show"

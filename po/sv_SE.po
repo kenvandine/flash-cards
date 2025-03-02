@@ -1,5 +1,23 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-28 16:09-0500\n"
+"PO-Revision-Date: 2025-02-28 16:11-0500\n"
+"Language: sv_SE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 msgid "Open Flash Cards File"
-msgstr "Öppna fil med flashkort"
+msgstr "Öppna Flashcards-fil"
 
 msgid "Save"
 msgstr "Spara"
@@ -28,14 +46,20 @@ msgstr "Senaste kortlekar"
 msgid "Delete"
 msgstr "Radera"
 
-msgid "Tap to Show"
-msgstr "Tryck för att visa"
+msgid "Credits"
+msgstr "Tack till"
+
+msgid "Created by"
+msgstr "Skapad av"
+
+msgid "A Flash Card viewer and editor"
+msgstr "En Flashcard-tittare och redigerare"
 
 msgid "Term"
-msgstr "Term"
+msgstr "Begrepp"
 
 msgid "Definition"
 msgstr "Definition"
 
-msgid "A Flash Card viewer and editor"
-msgstr "En flashkortsvy och redigerare"
+msgid "Tap to Show"
+msgstr "Tryck för att visa"

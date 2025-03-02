@@ -1,5 +1,5 @@
 msgid "Open Flash Cards File"
-msgstr "Apri file Flash Cards"
+msgstr "Apri file delle Flash Card"
 
 msgid "Save"
 msgstr "Salva"
@@ -20,7 +20,7 @@ msgid "Next"
 msgstr "Avanti"
 
 msgid "Previous"
-msgstr "Precedente"
+msgstr "Indietro"
 
 msgid "Recent Decks"
 msgstr "Mazzi recenti"
@@ -28,8 +28,14 @@ msgstr "Mazzi recenti"
 msgid "Delete"
 msgstr "Elimina"
 
-msgid "Tap to Show"
-msgstr "Tocca per mostrare"
+msgid "Credits"
+msgstr "Crediti"
+
+msgid "Created by"
+msgstr "Creato da"
+
+msgid "A Flash Card viewer and editor"
+msgstr "Un visualizzatore e editor di Flash Card"
 
 msgid "Term"
 msgstr "Termine"
@@ -37,5 +43,5 @@ msgstr "Termine"
 msgid "Definition"
 msgstr "Definizione"
 
-msgid "A Flash Card viewer and editor"
-msgstr "Un visualizzatore ed editor di Flash Cards"
+msgid "Tap to Show"
+msgstr "Tocca per mostrare"
