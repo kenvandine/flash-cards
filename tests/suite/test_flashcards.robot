@@ -5,6 +5,6 @@ Resource         kvm.resource
 
 *** Test Cases ***
 Flash Cards Launches And Renders
-    [Documentation]    Verify flash-cards snap launches and renders a UI on Mir
+    [Documentation]    Verify flash-cards snap launches and renders a UI on a real GNOME desktop session (no Mir compositor or VNC required)
     [Tags]    smoke    yarf:certification_status: blocker
     Log Screenshot
